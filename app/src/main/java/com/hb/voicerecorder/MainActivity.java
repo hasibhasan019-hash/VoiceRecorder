@@ -115,7 +115,7 @@ public class MainActivity extends Activity {
         TextView label = new TextView(this);
         label.setTextSize(16);
         label.setPadding(0, dp(16), 0, dp(4));
-        label.setText("Recordings (tap to play, long press to delete)");
+        label.setText("Recordings (tap = play, lomba chhapo = delete)");
 
         list = new ListView(this);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
@@ -167,10 +167,10 @@ public class MainActivity extends Activity {
         btnPause.setText(st == 2 ? "Resume" : "Pause");
         btnStop.setEnabled(st != 0);
 
-        if (st == 1) status.setText("Recording...");
-        else if (st == 2) status.setText("Paused");
-        else if (mp != null) status.setText("Playing: " + playingName);
-        else status.setText("Tap Record to start");
+        if (st == 1) status.setText("Recording cholche...");
+        else if (st == 2) status.setText("Pause kora ache");
+        else if (mp != null) status.setText("Play hocche: " + playingName);
+        else status.setText("Record button chapo");
 
         if (seenSaved != RecorderService.saved) {
             seenSaved = RecorderService.saved;
@@ -199,7 +199,7 @@ public class MainActivity extends Activity {
             if (res.length > 0 && res[0] == PackageManager.PERMISSION_GRANTED) {
                 startRec();
             } else {
-                Toast.makeText(this, "Microphone permission is required to record",
+                Toast.makeText(this, "Mic permission na dile record kora jabe na",
                         Toast.LENGTH_LONG).show();
             }
         }
@@ -245,7 +245,7 @@ public class MainActivity extends Activity {
 
     private void togglePlay(Rec r) {
         if (RecorderService.state != 0) {
-            Toast.makeText(this, "Cannot play while recording",
+            Toast.makeText(this, "Record cholar somoy play kora jabe na",
                     Toast.LENGTH_SHORT).show();
             return;
         }
@@ -262,7 +262,7 @@ public class MainActivity extends Activity {
             playingName = r.name;
         } catch (Exception e) {
             stopPlay();
-            Toast.makeText(this, "Could not play this recording", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Play kora gelo na", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -276,15 +276,15 @@ public class MainActivity extends Activity {
 
     private void confirmDelete(final Rec r) {
         new AlertDialog.Builder(this)
-                .setTitle("Delete recording?")
+                .setTitle("Delete korbe?")
                 .setMessage(r.name)
-                .setNegativeButton("Cancel", null)
+                .setNegativeButton("Na", null)
                 .setPositiveButton("Delete", (d, w) -> {
                     if (playingId == r.id) stopPlay();
                     try {
                         getContentResolver().delete(r.uri(), null, null);
                     } catch (Exception e) {
-                        Toast.makeText(this, "Could not delete this recording",
+                        Toast.makeText(this, "Delete kora gelo na",
                                 Toast.LENGTH_SHORT).show();
                     }
                     loadList();
